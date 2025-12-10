@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kontak - Kopi Nusantara </title>
+    <link rel="stylesheet" href="style.css" />
+    <script type="module" src="js/form.js"></script>
+    <script type="module" src="js/newsletter.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Kopi Nusantara</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Beranda</a></li>
+                <li><a href="tentang.html">Tentang Kami</a></li>
+                <li><a href="produk.html">Produk</a></li>
+                <li><a href="galeri.html">Galeri</a></li>
+                <li><a href="kontak.html">Kontak</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Hubungi Kami</h2>
+        <p>Silahkan isi formulir berikut untuk menghubungi tim Kopi Nusantara:</p>
+
+        <form id="formKontak" action="#" method="post">
+            <label for="nama">Nama:</label><br>
+            <input type="text" id="nama" name="nama"/>
+            <span class="error" id="errorNama"></span><br><br>
+
+            <label for="email">Email:</label><br>
+            <input type="email" id="email" name="email"/>
+            <span class="error" id="errorEmail"></span><br><br>
+
+            <label for="JenisKelamin">Jenis Kelamin:</label><br>
+            <input type="radio" id="jenisKelamin" name="JenisKelamin" value="Laki-laki">
+            <label for="laki">Laki-laki</label><br>
+            <input type="radio" id="jenisKelamin" name="JenisKelamin" value="Perempuan">
+            <label for="perempuan">Perempuan</label>
+            <span class="error" id="errorJenisKelamin"></span><br><br>
+
+            <label for="kategori">Kategori Pesan:</label><br>
+            <select id="kategori" name="kategori">
+                <option value="">-- Pilih Kategori --</option>
+                <option value="umum">Umum</option>
+                <option value="produk">Produk</option>
+                <option value="kerjasama">Kerja Sama</option>
+            </select>
+            <span class="error" id="errorKategori"></span><br><br>
+
+            <label for="tanggal">Tanggal Pengiriman Pesan:</label><br>
+            <input type="date" id="tanggal" name="tanggal"/>
+            <span class="error" id="errorTanggal"></span><br><br>
+
+            <label for="pesan">Pesan:</label><br>
+            <textarea id="pesan" name="pesan" rows="5" cols="30"></textarea>
+            <span class="error" id="errorPesan"></span><br><br>
+
+            <label for="file">Upload File (gambar/dokumen):</label><br>
+            <input type="file" id="file" name="file">
+            <span class="error" id="errorFile"></span><br><br>
+
+            <input type="checkbox" id="langganan" name="langganan" value="ya">
+            <label for="langganan">Saya ingin menerima newsletter</label><br><br>
+
+            <button type="submit">Kirim</button>
+            <button type="reset" value="Clear Data">Hapus</button>
+
+            <p id="errorMsg" style="color: red;"></p>
+        </form>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Kopi Nusantara</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const nama = document.getElementById("nama");
+            const email = document.getElementById("email");
+            const pesan = document.getElementById("pesan");
+            const errorMsg = document.getElementById("errorMsg");
+
+            // praktikum 1 validasi saat submit
+            const form = document.getElementById("formKontak")
+
+            form.addEventListener("submit", function (event) {
+                let valid = true;
+
+                // Nama harus diisi
+                const nama = document.getElementById("nama");
+                const errorNama = document.getElementById("errorNama");
+                if (nama.value.trim() === ""){
+                    errorNama.textContent = "Nama wajib diisi.";
+                    valid = false;
+                } else {
+                    errorNama.textContent = "";
+                }
+
+                // Email harus valid dan domain harus @gmail.com
+                const email = document.getElementById("email");
+                const errorEmail = document.getElementById("errorEmail");
+                const emailPattern = /^[^ ]+@gmail\.com$/i;
+                if (!emailPattern.test(email.value)){
+                    errorEmail.textContent = "Email harus @gmail.com dan format benar.";
+                    valid = false;
+                } else {
+                    errorEmail.textContent = "";
+                }
+
+                // Katergori harus dipilih
+                const kategori = document.getElementById("kategori");
+                const errorKategori = document.getElementById("errorKategori");
+                if (kategori.value === ""){
+                    errorKategori.textContent = "Pilih salah satu kategori.";
+                    valid = false;
+                } else {
+                    errorKategori.textContent = "";
+                }
+
+                // Pesan minimal 10 karakter
+                const pesan = document.getElementById("pesan");
+                const errorPesan = document.getElementById("errorPesan");
+                if (pesan.value.trim().length < 10){
+                    errorPesan.textContent = "Pesan minimal 10 karakter.";
+                    valid = false;
+                } else {
+                    errorPesan.textContent = "";
+                }
+
+                if (!valid){
+                    event.preventDefault() // Gagalkan submit
+                } else {
+                    // beri komentar pada else disini karena sudah menggunakan form.js
+                    // alert("Pesan berhasil dikirim!");
+                    // form.reset();
+                }
+
+                const form = document.getElementById("formKontak");
+                form.addEventListener("submit", function (e) {
+                    e.preventDefault(); // mencegah reload halaman
+                    if (nama.value === "" || email.value === "" || pesan.value === ""){
+                        errorMsg.textContent = "Semua field harus diisi.";
+                    } else {
+                        errorMsg.textContent = "";
+                        alert("Pesan berhasil dikirim!");
+                        form.reset();
+                    }       
+                });
+            });
+        });
+
+        // praktikum 2 validasi real-time dengan event input dan blur 
+        document.getElementById("nama").addEventListener("blur", function (){
+            const errorNama = document.getElementById("errorNama");
+            if (this.value.trim() === ""){
+                errorNama.textContent = "Nama wajib diisi.";
+            } else {
+                errorNama.textContent = "";
+            }
+        });
+
+        document.getElementById("pesan").addEventListener("input", function () {
+            const errorPesan = document.getElementById("errorPesan");
+            if (this.value.trim().length < 10){
+                errorPesan.textContent = "Pesan minimal 10 karakter.";
+            } else {
+                errorPesan.textContent = "";
+            }
+        });
+
+        // praktikum 3 validasi checkbox
+        document.getElementById("langganan").addEventListener("change", function () {
+            if (this.checked){
+                alert("Terima kasih telah berlangganan newsletter!");
+            }
+        });
+    </script>
+
+</body>
+</html>
